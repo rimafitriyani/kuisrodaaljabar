@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf9ff">
+  <title>Roda Aljabar — Kuis PLSV &amp; PtLSV</title>
+  <style>
+    :root {color-scheme:light;--bg:#faf9ff;--panel:#ffffff;--panel2:#f5f0ff;--line:#ded5f1;--text:#281344;--muted:#6d5a8a;--violet:#6d39c2;--cyan:#7d53c0;--gold:#6735b8;--green:#6a36b2;--red:#a43b81;--radius:22px}
+    * {box-sizing:border-box}
+    html {scroll-behavior:smooth}
+    body {margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:radial-gradient(900px 430px at 15% -9%,#e8dbff 0%,transparent 68%),radial-gradient(800px 500px at 97% 11%,#f0e8ff 0%,transparent 70%),var(--bg);color:var(--text)}
+    button,select,input {font:inherit}
+    button {cursor:pointer;color:inherit}
+    button:disabled {cursor:not-allowed;opacity:.45}
+    button:focus-visible,input:focus-visible,select:focus-visible {outline:3px solid var(--gold);outline-offset:3px}
+    .app {width:min(1460px,100%);margin:auto;padding:20px 24px 25px}
+    .header {display:flex;gap:15px;align-items:center;justify-content:space-between;margin-bottom:19px;flex-wrap:wrap}
+    .brand {display:flex;align-items:center;gap:13px}
+    .brand-mark {display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#7240cb,#b08bf1);box-shadow:0 10px 30px #7747cb25;font-size:29px;color:#ffffff;font-weight:900}
+    h1,h2,h3,p {margin:0}
+    h1 {font-size:clamp(23px,2.1vw,31px);letter-spacing:-.8px;line-height:1.14}
+    .subtitle {font-size:13px;color:var(--muted);margin-top:5px}
+    .header-right {display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .pill {border:1px solid var(--line);border-radius:999px;background:#ffffff;padding:9px 13px;font-size:13px;font-weight:700;color:#523579;white-space:nowrap}
+    .icon-btn {border:1px solid var(--line);background:#ffffff;border-radius:13px;padding:10px 13px;min-height:41px;font-size:14px;font-weight:700}
+    .icon-btn:hover {background:#f0e7ff}
+    .main-grid {display:grid;grid-template-columns:minmax(320px,.91fr) minmax(0,1.6fr);gap:17px;align-items:stretch}
+    .panel {border:1px solid var(--line);background:linear-gradient(155deg,#ffffff,#fdfbff 78%);border-radius:var(--radius);box-shadow:0 18px 38px #4c228014}
+    .wheel-panel {padding:19px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;min-width:0}
+    .panel-title {font-size:14px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#6d3abf}
+    .wheel-note {color:var(--muted);font-size:13px;line-height:1.45}
+    .wheel-wrap {position:relative;width:min(100%,315px);aspect-ratio:1;margin:2px auto 3px;filter:drop-shadow(0 16px 24px #4f24803b)}
+    .wheel-disc {width:100%;height:100%;transform:rotate(0deg);will-change:transform;transition:transform 4.4s cubic-bezier(.12,.82,.15,1)}
+    .wheel-svg {display:block;width:100%;height:100%}
+    .wheel-pointer {position:absolute;z-index:4;top:-9px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:30px solid #4f259b;filter:drop-shadow(0 3px 4px #43217740)}
+    .wheel-hub {position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:77px;height:77px;border-radius:50%;border:7px solid #ffffff;background:linear-gradient(145deg,#f7f1ff,#d7c0ff);color:#532ba0;display:grid;place-items:center;font-size:27px;font-weight:1000;box-shadow:0 6px 15px #3c1a7330;pointer-events:none}
+    .spin-btn {width:100%;max-width:335px;border:0;border-radius:17px;background:linear-gradient(98deg,#6933c6,#9969e3);box-shadow:0 12px 30px #7840cf38;color:#ffffff;font-weight:950;padding:15px 20px;font-size:19px;letter-spacing:.3px;transition:transform .15s,filter .15s}
+    .spin-btn:hover:not(:disabled) {transform:translateY(-2px);filter:brightness(1.06)}
+    .counter-row {display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;margin-top:auto}
+    .counter {background:#f6f0ff;border:1px solid var(--line);border-radius:13px;padding:10px;text-align:left;font-size:12px;color:var(--muted)}
+    .counter strong {display:block;margin-top:4px;color:var(--text);font-size:20px;font-variant-numeric:tabular-nums}
+    .counter:nth-child(1) strong {color:#592ba9}.counter:nth-child(2) strong {color:#8b4bc5}
+    .challenge-panel {display:flex;flex-direction:column;min-width:0;overflow:hidden}
+    .stage-header {padding:20px 23px 17px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}
+    .stage-heading {font-size:20px;font-weight:850;letter-spacing:-.4px}
+    .status-label {display:inline-flex;align-items:center;gap:6px;background:#f4edff;border:1px solid #d4c3f1;border-radius:999px;padding:7px 11px;color:#5f3a9a;font-size:12px;font-weight:800}
+    .status-label::before {content:"";width:7px;height:7px;background:var(--green);border-radius:50%}
+    .prompt-area {display:flex;flex-direction:column;flex:1;justify-content:center;padding:24px 26px 17px;min-height:185px;gap:16px}
+    .badges {display:flex;flex-wrap:wrap;gap:8px}
+    .tag {padding:7px 11px;border:1px solid #d0b9ef;border-radius:10px;background:#f1e8ff;color:#6432ad;font-weight:850;font-size:12px}
+    .tag.cyan {background:#efe5ff;color:#7034b8;border-color:#d4b9f6}
+    .tag.gold {background:#e8d9ff;color:#572695;border-color:#c7a9ed}
+    .question-text {font-size:clamp(25px,2.65vw,39px);line-height:1.31;letter-spacing:-.65px;font-weight:780;max-width:30ch;overflow-wrap:anywhere}
+    .question-text.long {font-size:clamp(23px,2.05vw,31px);max-width:42ch}
+    .placeholder-text {font-size:clamp(21px,2.5vw,33px);line-height:1.4;color:#503079;max-width:39ch;font-weight:770}
+    .support-text {font-size:14px;color:var(--muted);line-height:1.48}
+    .result-banner {border:1px solid #b69be4;background:#f1e9ff;color:#5b2fa2;border-radius:12px;padding:11px 13px;font-size:14px;font-weight:800}
+    .result-banner.no-point {border-color:#cdb8e5;background:#faf5ff;color:#7a4a96}
+    .answer-card {margin:0 23px 13px;padding:13px 16px;border:1px solid #c8b2ec;background:linear-gradient(105deg,#f5efff,#faf7ff);border-radius:15px}
+    .answer-title {font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#6c37bc;margin-bottom:6px}
+    .answer-main {font-weight:950;font-size:clamp(20px,2.15vw,29px);color:#3d1d76}
+    .answer-explain {margin-top:7px;font-size:14px;line-height:1.55;color:#4b3967}
+    .graph-wrap {margin-top:11px;background:#ffffff;border:1px solid #e4d8f4;border-radius:11px;padding:7px 10px 2px;max-width:470px}
+    .stage-bottom {border-top:1px solid var(--line);background:#f8f4ff;padding:14px 20px 18px}
+    .timer-row {display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:13px}
+    .timer-label {font-size:12px;color:var(--muted);font-weight:750;letter-spacing:.3px}
+    .timer-display {font-variant-numeric:tabular-nums;font-size:24px;font-weight:950;color:var(--gold);min-width:65px}
+    .timer-display.danger {color:var(--red);animation:pulse 1s infinite}
+    @keyframes pulse {50%{opacity:.5}}
+    select {padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:#ffffff;color:#48277b;font-weight:700}
+    .small-btn {padding:9px 13px;border-radius:10px;border:1px solid #d0c0ea;background:#eee4ff;font-weight:800;font-size:13px}
+    .small-btn:hover:not(:disabled) {background:#e2d0fc}
+    .timer-track {width:100%;height:5px;border-radius:6px;overflow:hidden;background:#e1d5f4}
+    .timer-fill {background:linear-gradient(90deg,#7140cf,#b18cec);height:100%;width:100%;transition:width .2s linear}
+    .actions {display:flex;gap:10px;flex-wrap:wrap}
+    .action-btn {border:0;border-radius:12px;padding:12px 15px;font-weight:900;font-size:14px;flex:1;min-width:135px;min-height:45px}
+    .btn-reveal {background:linear-gradient(100deg,#7648cd,#9770db);color:white}
+    .btn-right {background:#5b30b3;color:#ffffff}
+    .btn-wrong {background:#ead8fa;color:#632b85}
+    .btn-neutral {background:#ffffff;border:1px solid #c7b2e4;color:#54288e}
+    .score-section {margin-top:17px;border:1px solid var(--line);background:#ffffff;border-radius:var(--radius);padding:16px 19px;box-shadow:0 12px 30px #5427800f}
+    .score-top {display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:13px}
+    .score-title {font-size:17px;font-weight:850}
+    .score-help {font-size:12px;color:var(--muted)}
+    .score-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+    .team-card {border:2px solid #e7ddf6;background:#fcfaff;border-radius:14px;padding:11px 14px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;min-height:78px;transition:border-color .15s,transform .15s,background .15s}
+    .team-card:hover {transform:translateY(-2px);background:#f3ecff}
+    .team-card.active {border-color:#7641ca;background:#efe3ff;box-shadow:0 0 0 2px #c9aff528 inset}
+    .team-name {font-size:14px;font-weight:900;overflow-wrap:anywhere;line-height:1.3}
+    .team-score {font-size:29px;line-height:1.1;font-weight:950;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .team-kicker {font-size:11px;color:#86729e;margin-top:4px}
+    .team-score-dot {width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;background:var(--team-color)}
+    .footer {display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:13px;font-size:12px;color:#78658e}
+    .footer-buttons {display:flex;gap:12px;flex-wrap:wrap}
+    .text-btn {border:0;background:transparent;color:#6638a8;font-size:12px;font-weight:800;padding:1px 0;text-decoration:underline;text-underline-offset:3px}
+    .text-btn:hover {color:#3c176e}
+    .overlay {position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:#271342b8;backdrop-filter:blur(7px);padding:16px;overflow-y:auto}
+    .overlay[hidden],[hidden] {display:none!important}
+    .dialog {width:min(590px,100%);border:1px solid #cbb6ee;border-radius:24px;background:linear-gradient(146deg,#ffffff,#f8f3ff);box-shadow:0 25px 95px #26114755;padding:26px}
+    .dialog h2 {font-size:27px;letter-spacing:-.7px;margin-bottom:8px}
+    .dialog p {color:#6c578c;line-height:1.6;font-size:14px}
+    .dialog .top-icon {font-size:36px;margin-bottom:9px}
+    .configure-row {display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f6f0ff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:19px 0 11px}
+    .configure-row label {font-size:14px;font-weight:850}
+    .count-control {display:flex;align-items:center;gap:12px}
+    .count-control strong {font-size:19px;min-width:15px;text-align:center}
+    .count-control button {background:#e9dbff;border:1px solid #cbb0ee;border-radius:9px;height:32px;width:34px;font-size:20px;line-height:1}
+    .name-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:19px}
+    .input-group label {display:block;color:#5d4381;font-size:12px;font-weight:850;margin-bottom:5px}
+    .input-group input {width:100%;padding:11px 12px;border-radius:11px;background:#ffffff;border:1px solid #c9b9e6;color:#33195a;font-size:14px}
+    .dialog-actions {display:flex;gap:10px;margin-top:13px;flex-wrap:wrap}
+    .dialog-actions button {min-width:150px;flex:1}
+    .end-list {display:grid;gap:8px;margin:20px 0 16px}
+    .end-item {display:flex;align-items:center;gap:12px;justify-content:space-between;background:#f6f0ff;border:1px solid #e0d4f2;border-radius:12px;padding:12px 13px;font-weight:850}
+    .end-rank {font-size:20px;color:var(--gold);min-width:37px}
+    .end-name {flex:1}
+    .end-points {font-size:20px;color:#6c36b5}
+    .instruction-list {padding-left:19px;color:#4d346e;line-height:1.7;font-size:14px}
+    .dialog .info-strong {color:#6635ab;font-weight:800}
+    @media(max-width:1000px) {.app{padding:16px}.main-grid{grid-template-columns:minmax(280px,.84fr) minmax(0,1.45fr)}.wheel-wrap{width:min(100%,290px)}.challenge-panel .prompt-area{padding:20px}.question-text{font-size:clamp(23px,3vw,33px)}.question-text.long{font-size:23px}.answer-card{margin:0 16px 12px}}
+    @media(max-width:760px) {.main-grid{grid-template-columns:1fr}.wheel-wrap{width:min(75vw,300px)}.wheel-panel{gap:8px}.question-text{max-width:100%}.prompt-area{min-height:230px}.header{align-items:flex-start}.brand-mark{width:45px;height:45px}}
+    @media(max-height:760px) and (min-width:761px) {.app{padding-top:12px;padding-bottom:12px}.header{margin-bottom:11px}.wheel-wrap{width:min(100%,272px)}.wheel-panel{gap:7px;padding:14px}.stage-header{padding:13px 20px}.prompt-area{min-height:146px;padding:17px 24px 12px;gap:10px}.question-text{font-size:clamp(24px,2.25vw,35px)}.question-text.long{font-size:25px}.stage-bottom{padding:12px 18px}.score-section{margin-top:11px;padding:11px 15px}.score-grid{gap:8px}.team-card{min-height:68px;padding:9px 12px}.footer{margin-top:8px}}
+    @media(max-height:900px) and (min-width:761px) {
+      .app{padding-top:10px;padding-bottom:10px}
+      .header{margin-bottom:8px}
+      .brand-mark{width:43px;height:43px;border-radius:13px;font-size:24px}
+      h1{font-size:26px}
+      .header-right .pill,.header-right .icon-btn{padding:7px 10px;min-height:34px}
+      .wheel-panel{padding:10px 15px;gap:5px}
+      .wheel-note{font-size:12px}
+      .wheel-wrap{width:min(100%,257px);margin:0 auto 2px}
+      .spin-btn{padding:10px 16px;font-size:17px;border-radius:13px}
+      .counter{padding:8px}
+      .counter strong{font-size:18px;margin-top:2px}
+      .stage-header{padding:11px 16px}
+      .stage-heading{font-size:18px}
+      .prompt-area{min-height:118px;padding:12px 17px 10px;gap:9px}
+      .badges{gap:6px}
+      .tag{padding:5px 8px;font-size:11px}
+      .question-text{font-size:clamp(24px,2.2vw,31px);max-width:39ch}
+      .question-text.long{font-size:23px;max-width:48ch}
+      .support-text{font-size:12px}
+      .answer-card{padding:9px 13px;margin:0 15px 8px}
+      .answer-title{font-size:11px;margin-bottom:3px}
+      .answer-main{font-size:24px}
+      .answer-explain{margin-top:4px;font-size:12.5px;line-height:1.35}
+      .graph-wrap{max-width:320px;margin-top:5px;padding:2px 5px 0}
+      .stage-bottom{padding:8px 15px 10px}
+      .timer-row{gap:7px;margin-bottom:7px}
+      .timer-display{font-size:20px}
+      select,.small-btn{padding:6px 9px;font-size:12px}
+      .timer-track{height:4px}
+      .actions{margin-top:8px!important}
+      .action-btn{min-height:38px;padding:8px 12px;font-size:13px}
+      .score-section{margin-top:8px;padding:10px 13px}
+      .score-top{margin-bottom:8px}
+      .team-card{min-height:62px;padding:8px 11px}
+      .team-score{font-size:25px}
+      .footer{margin-top:6px}
+    }
+    @media(prefers-reduced-motion:reduce) {.spin-btn,.team-card{transition:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">∑</div><div><h1>RODA ALJABAR</h1><p class="subtitle">Kuis klasikal PLSV &amp; PtLSV · 50 tantangan · 1 laptop + infokus</p></div></div>
+    <div class="header-right"><span class="pill" id="progressPill">0 dari 50 soal selesai</span><button class="icon-btn" id="soundBtn" title="Aktifkan atau matikan suara" aria-pressed="false">🔇 Suara</button><button class="icon-btn" id="helpBtn">❔ Panduan</button><button class="icon-btn" id="fullBtn">⛶ Layar penuh</button></div>
+  </header>
+  <main class="main-grid">
+    <section class="panel wheel-panel" aria-label="Roda kategori">
+      <div class="panel-title">Putar Roda Keberuntungan</div>
+      <p class="wheel-note" id="wheelNote">PLSV atau PtLSV? Biarkan roda memilih tantangan untuk timmu!</p>
+      <div class="wheel-wrap"><div class="wheel-pointer" aria-hidden="true"></div><div class="wheel-disc" id="wheelDisc"><svg class="wheel-svg" id="wheelSvg" viewBox="0 0 360 360" role="img" aria-label="Roda kategori PLSV dan PtLSV"></svg></div><div class="wheel-hub" aria-hidden="true">✦</div></div>
+      <button class="spin-btn" id="spinBtn">🎡 PUTAR RODA</button>
+      <div class="counter-row"><div class="counter">Sisa soal PLSV<strong id="remainP">25</strong></div><div class="counter">Sisa soal PtLSV<strong id="remainT">25</strong></div></div>
+    </section>
+    <section class="panel challenge-panel" aria-label="Tantangan kuis">
+      <div class="stage-header"><div class="stage-heading" id="stageHeading">Arena Tantangan</div><div class="status-label" id="statusLabel">Siap dimainkan</div></div>
+      <div class="prompt-area" id="promptArea"><div class="badges" id="questionBadges"></div><h2 id="questionText" class="placeholder-text">Pilih tim yang bermain, lalu putar roda untuk mendapat soal pertama!</h2><p class="support-text" id="questionSupport">Diskusikan jawaban bersama kelompok. Guru mengoperasikan aplikasi.</p><div class="result-banner" id="resultBanner" hidden></div></div>
+      <div class="answer-card" id="answerCard" hidden><div class="answer-title">Kunci Jawaban &amp; Pembahasan</div><div class="answer-main" id="answerMain"></div><p class="answer-explain" id="answerExplain"></p><div class="graph-wrap" id="graphWrap" hidden></div></div>
+      <div class="stage-bottom">
+        <div class="timer-row"><span class="timer-label">WAKTU DISKUSI</span><span class="timer-display" id="timerDisplay" aria-live="off">00:45</span><select id="timerSelect" aria-label="Durasi timer"><option value="30">30 detik</option><option value="45" selected>45 detik</option><option value="60">60 detik</option><option value="90">90 detik</option></select><button class="small-btn" id="timerBtn" disabled>▶ Mulai</button><button class="small-btn" id="timerResetBtn" disabled>↻ Ulang</button></div>
+        <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+        <div class="actions" style="margin-top:13px"><button class="action-btn btn-reveal" id="revealBtn" disabled>👁 Tampilkan Jawaban</button><button class="action-btn btn-right" id="correctBtn" hidden>✓ Benar · +10</button><button class="action-btn btn-wrong" id="wrongBtn" hidden>✕ Salah · +0</button><button class="action-btn btn-neutral" id="nextBtn" hidden>Putar tantangan berikutnya ↻</button></div>
+      </div>
+    </section>
+  </main>
+  <section class="score-section" aria-label="Papan skor kelompok">
+    <div class="score-top"><h2 class="score-title">🏆 Papan Skor Kelompok</h2><span class="score-help">Klik kelompok untuk memilih siapa yang sedang menjawab</span></div><div class="score-grid" id="scoreGrid"></div>
+  </section>
+  <footer class="footer"><span>Dirancang untuk dimainkan bersama di kelas · Semua soal dan pembahasan tersedia offline</span><div class="footer-buttons"><button class="text-btn" id="exportBtn">Unduh hasil (.csv)</button><button class="text-btn" id="restartBtn">Mulai ulang permainan</button></div></footer>
+</div>
+
+<div class="overlay" id="setupOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="setupTitle"><div class="dialog"><div class="top-icon">🎡</div><h2 id="setupTitle">Selamat datang di Roda Aljabar!</h2><p>Bagi murid menjadi kelompok. Setiap kelompok berdiskusi tanpa perlu perangkat pribadi. Guru memilih tim, memutar roda, dan mencatat skor.</p><div class="configure-row"><label>Jumlah kelompok</label><div class="count-control"><button id="minusTeam" aria-label="Kurangi kelompok">−</button><strong id="teamCount">4</strong><button id="plusTeam" aria-label="Tambah kelompok">+</button></div></div><div class="name-grid" id="teamInputs"></div><button class="spin-btn" id="startBtn" style="max-width:none">Mulai Permainan →</button><p style="margin-top:12px;font-size:12px">50 soal berbeda · 25 PLSV + 25 PtLSV · tingkat mudah, sedang, dan menantang.</p></div></div>
+<div class="overlay" id="helpOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="dialog"><h2 id="helpTitle">Cara Bermain</h2><ol class="instruction-list"><li>Pilih kelompok yang akan bermain di papan skor.</li><li>Tekan <span class="info-strong">PUTAR RODA</span>. Roda memilih PLSV atau PtLSV dan memunculkan soal yang belum pernah tampil.</li><li>Tekan <span class="info-strong">Mulai</span> untuk menghitung waktu diskusi. Kelompok menjawab secara lisan atau di papan tulis.</li><li>Tekan <span class="info-strong">Tampilkan Jawaban</span> untuk menampilkan kunci, cara penyelesaian, dan garis bilangan jika relevan.</li><li>Tekan <span class="info-strong">Benar</span> untuk memberi poin sesuai tingkat kesulitan, atau <span class="info-strong">Salah</span> untuk mengakhiri soal tanpa poin.</li><li>Ulangi sampai 50 soal selesai. Skor dan kemajuan tersimpan otomatis di browser laptop yang sama.</li></ol><p>Nilai soal: <span class="info-strong">Mudah 10 · Sedang 20 · Menantang 30 poin</span>. Tombol F11 pada browser juga bisa dipakai untuk layar penuh.</p><div class="dialog-actions"><button class="action-btn btn-reveal" id="closeHelp">Mengerti</button></div></div></div>
+<div class="overlay" id="finishOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="finishTitle"><div class="dialog"><div class="top-icon">🏆</div><h2 id="finishTitle">Misi Aljabar Selesai!</h2><p>Semua 50 soal telah dimainkan. Selamat kepada seluruh kelompok yang sudah menyelesaikan tantangan.</p><div class="end-list" id="endList"></div><div class="dialog-actions"><button class="action-btn btn-neutral" id="closeFinish">Lihat papan skor</button><button class="action-btn btn-right" id="finishExport">Unduh hasil CSV</button></div></div></div>
+<script>
+'use strict';
+// Seluruh 50 soal, kunci, dan pembahasan disimpan di dalam file agar dapat dipakai offline.
+const QUESTIONS = [
+  // 25 PLSV
+  {id:'P01',cat:'PLSV',level:1,q:'Tentukan nilai x: 3x + 5 = 20.',a:'x = 5',exp:'Kurangi kedua ruas dengan 5: 3x = 15. Bagi kedua ruas dengan 3 sehingga x = 5.'},
+  {id:'P02',cat:'PLSV',level:1,q:'Tentukan nilai x: 2x − 7 = 11.',a:'x = 9',exp:'Tambahkan 7 pada kedua ruas: 2x = 18. Karena itu x = 18/2 = 9.'},
+  {id:'P03',cat:'PLSV',level:1,q:'Tentukan nilai x: 5x + 4 = 39.',a:'x = 7',exp:'5x = 39 − 4 = 35. Bagi 5 sehingga x = 7.'},
+  {id:'P04',cat:'PLSV',level:1,q:'Tentukan nilai x: 7x − 9 = 12.',a:'x = 3',exp:'7x = 12 + 9 = 21. Bagi 7 sehingga x = 3.'},
+  {id:'P05',cat:'PLSV',level:1,q:'Tentukan nilai x: 4(x + 2) = 28.',a:'x = 5',exp:'Bagi kedua ruas dengan 4: x + 2 = 7. Kurangi 2 sehingga x = 5.'},
+  {id:'P06',cat:'PLSV',level:1,q:'Tentukan nilai x: 3(x − 4) = 15.',a:'x = 9',exp:'Bagi kedua ruas dengan 3: x − 4 = 5. Tambahkan 4 sehingga x = 9.'},
+  {id:'P07',cat:'PLSV',level:1,q:'Tentukan nilai x: 2x + 9 = x + 16.',a:'x = 7',exp:'Kurangi kedua ruas dengan x dan 9: x = 16 − 9 = 7.'},
+  {id:'P08',cat:'PLSV',level:1,q:'Tentukan nilai x: 5x − 6 = 2x + 12.',a:'x = 6',exp:'Pindahkan suku x ke kiri dan bilangan ke kanan: 3x = 18, jadi x = 6.'},
+  {id:'P09',cat:'PLSV',level:2,q:'Tentukan nilai x: 6 − 2x = −8.',a:'x = 7',exp:'Kurangi kedua ruas dengan 6: −2x = −14. Bagi −2 sehingga x = 7.'},
+  {id:'P10',cat:'PLSV',level:2,q:'Tentukan nilai x: −3x + 8 = 20.',a:'x = −4',exp:'Kurangi 8 dari kedua ruas: −3x = 12. Bagi −3 sehingga x = −4.'},
+  {id:'P11',cat:'PLSV',level:2,q:'Tentukan nilai x: x/4 + 3 = 8.',a:'x = 20',exp:'x/4 = 8 − 3 = 5. Kalikan kedua ruas dengan 4 sehingga x = 20.'},
+  {id:'P12',cat:'PLSV',level:2,q:'Tentukan nilai x: (x − 3)/5 = 4.',a:'x = 23',exp:'Kalikan kedua ruas dengan 5: x − 3 = 20. Tambahkan 3 sehingga x = 23.'},
+  {id:'P13',cat:'PLSV',level:2,q:'Tentukan nilai x: 2(x + 3) = 3x − 4.',a:'x = 10',exp:'Uraikan: 2x + 6 = 3x − 4. Tambahkan 4 dan kurangi 2x sehingga x = 10.'},
+  {id:'P14',cat:'PLSV',level:2,q:'Tentukan nilai x: 4x + 6 = 2(x + 10).',a:'x = 7',exp:'Uraikan ruas kanan: 4x + 6 = 2x + 20. Maka 2x = 14 sehingga x = 7.'},
+  {id:'P15',cat:'PLSV',level:2,q:'Tentukan nilai x: 9 − 2(x − 1) = 1.',a:'x = 5',exp:'Uraikan: 9 − 2x + 2 = 1 sehingga 11 − 2x = 1. Maka −2x = −10 dan x = 5.'},
+  {id:'P16',cat:'PLSV',level:2,q:'Tentukan nilai x: 3(x + 2) + 4 = 25.',a:'x = 5',exp:'Uraikan: 3x + 6 + 4 = 25. Jadi 3x = 15 dan x = 5.'},
+  {id:'P17',cat:'PLSV',level:2,q:'Tentukan nilai x: 5(x − 1) − 2 = 23.',a:'x = 6',exp:'Uraikan: 5x − 5 − 2 = 23 sehingga 5x = 30. Jadi x = 6.'},
+  {id:'P18',cat:'PLSV',level:2,q:'Tentukan nilai x: 2(x + 4) = x + 15.',a:'x = 7',exp:'Uraikan: 2x + 8 = x + 15. Kurangi x dan 8 sehingga x = 7.'},
+  {id:'P19',cat:'PLSV',level:3,q:'Tentukan nilai x: 4(x − 3) + 2 = 2x + 6.',a:'x = 8',exp:'Uraikan: 4x − 10 = 2x + 6. Kurangi 2x dan tambahkan 10 sehingga 2x = 16, jadi x = 8.'},
+  {id:'P20',cat:'PLSV',level:3,q:'Usia Rini 4 tahun lebih tua daripada Sinta. Jumlah usia mereka 30 tahun. Berapa usia Sinta?',a:'13 tahun',exp:'Misalkan usia Sinta x, maka usia Rini x + 4. Persamaan: x + (x + 4) = 30. Jadi 2x = 26 dan x = 13.'},
+  {id:'P21',cat:'PLSV',level:3,q:'Harga 3 buku tulis sama, ditambah ongkos kirim Rp6.000, adalah Rp45.000. Berapa harga satu buku?',a:'Rp13.000',exp:'Misalkan harga satu buku x. Bentuk persamaan 3x + 6.000 = 45.000, sehingga 3x = 39.000 dan x = Rp13.000.'},
+  {id:'P22',cat:'PLSV',level:3,q:'Panjang persegi panjang 3 cm lebih dari lebarnya. Kelilingnya 34 cm. Berapa lebarnya?',a:'7 cm',exp:'Misalkan lebar x, panjang x + 3. Keliling: 2(x + x + 3) = 34. Maka 4x + 6 = 34, sehingga x = 7 cm.'},
+  {id:'P23',cat:'PLSV',level:3,q:'Suatu bilangan dikalikan 5 lalu dikurangi 8 menghasilkan 37. Bilangan apakah itu?',a:'9',exp:'Misalkan bilangan x. Persamaannya 5x − 8 = 37. Maka 5x = 45 sehingga x = 9.'},
+  {id:'P24',cat:'PLSV',level:3,q:'Tarif awal ojek Rp8.000, ditambah Rp3.000 per kilometer. Jika total Rp26.000, berapa kilometer perjalanan?',a:'6 km',exp:'Misalkan jarak x km. Persamaan 8.000 + 3.000x = 26.000. Maka 3.000x = 18.000, sehingga x = 6 km.'},
+  {id:'P25',cat:'PLSV',level:3,q:'Jumlah tiga bilangan bulat berurutan adalah 48. Tentukan bilangan yang di tengah.',a:'16',exp:'Misalkan bilangan tengah x, sehingga ketiganya x − 1, x, x + 1. Jumlahnya 3x = 48, jadi x = 16.'},
+  // 25 PtLSV
+  {id:'T01',cat:'PtLSV',level:1,q:'Tentukan himpunan penyelesaian: x + 5 > 12.',a:'x > 7',exp:'Kurangi kedua ruas dengan 5: x > 12 − 5, sehingga x > 7.',graph:{b:7,op:'>'}},
+  {id:'T02',cat:'PtLSV',level:1,q:'Tentukan himpunan penyelesaian: 2x ≤ 14.',a:'x ≤ 7',exp:'Bagi kedua ruas dengan 2 (bilangan positif), sehingga tanda tetap: x ≤ 7.',graph:{b:7,op:'≤'}},
+  {id:'T03',cat:'PtLSV',level:1,q:'Tentukan himpunan penyelesaian: 3x − 4 ≥ 11.',a:'x ≥ 5',exp:'Tambahkan 4: 3x ≥ 15. Bagi 3 sehingga x ≥ 5.',graph:{b:5,op:'≥'}},
+  {id:'T04',cat:'PtLSV',level:1,q:'Tentukan himpunan penyelesaian: 5x + 2 < 27.',a:'x < 5',exp:'Kurangi 2: 5x < 25. Bagi 5 sehingga x < 5.',graph:{b:5,op:'<'}},
+  {id:'T05',cat:'PtLSV',level:1,q:'Tentukan himpunan penyelesaian: x − 8 ≤ −2.',a:'x ≤ 6',exp:'Tambahkan 8 pada kedua ruas sehingga x ≤ 6.',graph:{b:6,op:'≤'}},
+  {id:'T06',cat:'PtLSV',level:1,q:'Tentukan himpunan penyelesaian: 4x + 3 > 19.',a:'x > 4',exp:'Kurangi 3: 4x > 16. Bagi 4 sehingga x > 4.',graph:{b:4,op:'>'}},
+  {id:'T07',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: −2x < 10.',a:'x > −5',exp:'Bagi kedua ruas dengan −2. Karena pembaginya negatif, tanda pertidaksamaan dibalik: x > −5.',graph:{b:-5,op:'>'}},
+  {id:'T08',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: −3x ≥ 12.',a:'x ≤ −4',exp:'Bagi kedua ruas dengan −3 dan balik tanda ≥ menjadi ≤. Hasilnya x ≤ −4.',graph:{b:-4,op:'≤'}},
+  {id:'T09',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: 6 − 2x ≤ 14.',a:'x ≥ −4',exp:'Kurangi 6: −2x ≤ 8. Bagi −2 dan balik tanda ≤ menjadi ≥. Jadi x ≥ −4.',graph:{b:-4,op:'≥'}},
+  {id:'T10',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: 9 − 3x > 0.',a:'x < 3',exp:'Kurangi 9: −3x > −9. Bagi −3 dan balik tanda > menjadi <: x < 3.',graph:{b:3,op:'<'}},
+  {id:'T11',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: 2(x + 1) ≥ 12.',a:'x ≥ 5',exp:'Bagi 2: x + 1 ≥ 6. Kurangi 1 sehingga x ≥ 5.',graph:{b:5,op:'≥'}},
+  {id:'T12',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: 3(x − 2) < 9.',a:'x < 5',exp:'Bagi 3: x − 2 < 3. Tambahkan 2 sehingga x < 5.',graph:{b:5,op:'<'}},
+  {id:'T13',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: (x + 4)/2 ≤ 7.',a:'x ≤ 10',exp:'Kalikan 2: x + 4 ≤ 14. Kurangi 4 sehingga x ≤ 10.',graph:{b:10,op:'≤'}},
+  {id:'T14',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: (2x − 6)/3 > 4.',a:'x > 9',exp:'Kalikan 3: 2x − 6 > 12. Tambahkan 6: 2x > 18, sehingga x > 9.',graph:{b:9,op:'>'}},
+  {id:'T15',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: 4x + 1 ≤ 2x + 13.',a:'x ≤ 6',exp:'Kurangi 2x dan 1: 2x ≤ 12. Bagi 2 sehingga x ≤ 6.',graph:{b:6,op:'≤'}},
+  {id:'T16',cat:'PtLSV',level:2,q:'Tentukan himpunan penyelesaian: 5x − 7 > 2x + 8.',a:'x > 5',exp:'Kurangi 2x dan tambahkan 7: 3x > 15. Bagi 3 sehingga x > 5.',graph:{b:5,op:'>'}},
+  {id:'T17',cat:'PtLSV',level:3,q:'Tentukan himpunan penyelesaian: 3(x + 2) ≤ 2x + 11.',a:'x ≤ 5',exp:'Uraikan: 3x + 6 ≤ 2x + 11. Kurangi 2x dan 6 sehingga x ≤ 5.',graph:{b:5,op:'≤'}},
+  {id:'T18',cat:'PtLSV',level:3,q:'Tentukan himpunan penyelesaian: −4(x − 1) > 12.',a:'x < −2',exp:'Uraikan: −4x + 4 > 12. Maka −4x > 8. Bagi −4 dan balik tanda: x < −2.',graph:{b:-2,op:'<'}},
+  {id:'T19',cat:'PtLSV',level:3,q:'Tentukan himpunan penyelesaian: −2x + 5 ≤ 11.',a:'x ≥ −3',exp:'Kurangi 5: −2x ≤ 6. Bagi −2 dan balik tanda: x ≥ −3.',graph:{b:-3,op:'≥'}},
+  {id:'T20',cat:'PtLSV',level:3,q:'Harga tiket wisata Rp8.000 per orang. Panitia memiliki Rp50.000. Berapa tiket paling banyak yang bisa dibeli?',a:'6 tiket',exp:'Misalkan banyak tiket n bilangan cacah. 8.000n ≤ 50.000, jadi n ≤ 6,25. Karena tiket harus utuh, maksimum 6 tiket.'},
+  {id:'T21',cat:'PtLSV',level:3,q:'Satu noken cenderamata Rp12.000, ditambah ongkos antar Rp8.000. Dengan dana Rp80.000, paling banyak berapa noken yang bisa dibeli?',a:'6 noken',exp:'Misalkan jumlah noken n bilangan cacah. 12.000n + 8.000 ≤ 80.000, maka 12.000n ≤ 72.000 sehingga n ≤ 6. Maksimum 6 noken.'},
+  {id:'T22',cat:'PtLSV',level:1,q:'Peserta kegiatan harus berusia sekurang-kurangnya 12 tahun. Jika usia peserta a, tuliskan pertidaksamaannya.',a:'a ≥ 12',exp:'Ungkapan “sekurang-kurangnya 12 tahun” berarti usia 12 tahun termasuk boleh ikut, begitu juga usia di atasnya.'},
+  {id:'T23',cat:'PtLSV',level:1,q:'Suhu T harus kurang dari −2 °C. Tuliskan pertidaksamaan yang sesuai.',a:'T < −2',exp:'Frasa “kurang dari” menggunakan tanda <, tanpa mencakup nilai −2 °C itu sendiri.'},
+  {id:'T24',cat:'PtLSV',level:3,q:'Keliling persegi tidak lebih dari 48 cm. Berapa panjang sisi maksimum persegi itu?',a:'12 cm',exp:'Misalkan panjang sisi s > 0. Keliling 4s ≤ 48 sehingga s ≤ 12. Jadi panjang sisi maksimumnya 12 cm.'},
+  {id:'T25',cat:'PtLSV',level:3,q:'Murid dinyatakan tuntas jika nilainya lebih dari 75. Jika nilai adalah bilangan bulat, berapa nilai terkecil yang tuntas?',a:'76',exp:'Syarat nilai n > 75. Karena n bilangan bulat, nilai terkecil yang memenuhi adalah 76.'}
+];
+
+const $=id=>document.getElementById(id);
+const COLORS=['#6030b1','#9161cb','#ab83de','#6c42aa','#c49be8','#8354c4'];
+const MAX=QUESTIONS.length;
+const STORAGE_KEY='roda-aljabar-plsv-ptlsv-v1';
+const defaultState=()=>({started:false,teams:['Tim Merah','Tim Biru','Tim Ungu','Tim Hijau'].map(name=>({name,score:0})),selected:0,used:[],currentId:null,revealed:false,graded:false,history:[],angle:0,sound:false});
+function loadState(){try{const raw=JSON.parse(localStorage.getItem(STORAGE_KEY));if(!raw||!Array.isArray(raw.teams)||!Array.isArray(raw.used)||!Array.isArray(raw.history)||raw.teams.length<2||raw.teams.length>6)return defaultState();const validIds=new Set(QUESTIONS.map(q=>q.id));if(raw.used.some(id=>!validIds.has(id))||raw.history.some(h=>!validIds.has(h.id))||new Set(raw.used).size!==raw.used.length)return defaultState();return {...defaultState(),...raw,selected:Math.min(Math.max(0,Number(raw.selected)||0),raw.teams.length-1)};}catch{return defaultState()}}
+let state=loadState();
+let spinning=false,spinTimeout=null,timerHandle=null,timeLeft=45,timerRunning=false,timerDeadline=0,teamInputCount=4;
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch{}}
+function question(){return QUESTIONS.find(q=>q.id===state.currentId)||null}
+function points(q){return q.level*10}
+function levelLabel(level){return ['','Mudah','Sedang','Menantang'][level]}
+function remaining(cat){return QUESTIONS.filter(q=>q.cat===cat&&!state.used.includes(q.id))}
+function bindText(id,value){$(id).textContent=value}
+function hide(id,hidden){$(id).hidden=hidden}
+function escapeSvg(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&apos;','"':'&quot;'}[c]))}
+function makeWheel(){const svg=$('wheelSvg');const cx=180,cy=180,r=168;let parts=[];for(let i=0;i<8;i++){const start=(-90+i*45)*Math.PI/180,end=(-90+(i+1)*45)*Math.PI/180,mid=(start+end)/2;const x1=cx+r*Math.cos(start),y1=cy+r*Math.sin(start),x2=cx+r*Math.cos(end),y2=cy+r*Math.sin(end);const isPLSV=i%2===0;const palette=isPLSV?['#6030ae','#7341c3','#582a9f','#8552cf']:['#ddc7ff','#c7a5f4','#e4d3ff','#d2b5f9'];const color=palette[Math.floor(i/2)];const labelColor=isPLSV?'#ffffff':'#351663';const tx=cx+113*Math.cos(mid),ty=cy+113*Math.sin(mid);parts.push(`<path d="M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z" fill="${color}" stroke="#ffffff" stroke-width="2.4"/>`);parts.push(`<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" text-anchor="middle" dominant-baseline="middle" fill="${labelColor}" font-size="${isPLSV?19:17}" font-weight="850" paint-order="stroke" stroke="${isPLSV?'#35166a80':'#ffffff80'}" stroke-width="3">${isPLSV?'PLSV':'PtLSV'}</text>`)}svg.innerHTML=`<circle cx="180" cy="180" r="177" fill="#ffffff" stroke="#9363d6" stroke-width="4"/>${parts.join('')}<circle cx="180" cy="180" r="168" fill="none" stroke="#ffffff8a" stroke-width="3"/><circle cx="180" cy="180" r="48" fill="#efe4ff" stroke="#ffffff" stroke-width="4"/>`;}
+function stopTimer(){clearInterval(timerHandle);timerHandle=null;timerRunning=false;timerDeadline=0}
+function resetTimer(){stopTimer();timeLeft=Number($('timerSelect').value);drawTimer()}
+function drawTimer(){const total=Number($('timerSelect').value),seconds=Math.ceil(Math.max(0,timeLeft));bindText('timerDisplay',`00:${String(seconds).padStart(2,'0')}`.replace(/^00:(\d\d\d)$/,'01:$1'));if(seconds>=60)bindText('timerDisplay',`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`);$('timerDisplay').classList.toggle('danger',seconds===0&&!!question()&&!state.graded);$('timerFill').style.width=`${Math.min(100,Math.max(0,100*timeLeft/total))}%`;bindText('timerBtn',timerRunning?'Ⅱ Jeda':timeLeft===0?'▶ Ulang':'▶ Mulai')}
+function chime(success=true){if(!state.sound)return;try{const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)return;const ctx=new AudioCtx();const times=success?[523,659,784]:[310,245];times.forEach((hz,i)=>{const osc=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*.14;osc.type='sine';osc.frequency.value=hz;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.085,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.14);osc.connect(g);g.connect(ctx.destination);osc.start(t);osc.stop(t+.15)});setTimeout(()=>ctx.close().catch(()=>{}),650)}catch{}}
+function startOrPauseTimer(){if(!question()||state.graded||spinning)return;if(timerRunning){timeLeft=Math.max(0,(timerDeadline-Date.now())/1000);stopTimer();drawTimer();return}if(timeLeft<=0)timeLeft=Number($('timerSelect').value);timerDeadline=Date.now()+timeLeft*1000;timerRunning=true;drawTimer();timerHandle=setInterval(()=>{timeLeft=Math.max(0,(timerDeadline-Date.now())/1000);if(timeLeft<=0){stopTimer();chime(false)}drawTimer()},90)}
+function makeNumberLine(g){const b=g.b,op=g.op,strict=op==='>'||op==='<',right=(op==='>'||op==='≥'),x0=224,y=46,left=35,rightX=415,mark='#7d42ce';let s=`<svg viewBox="0 0 450 106" width="100%" role="img" aria-label="Garis bilangan: ${escapeSvg(op)} ${b}"><line x1="28" y1="46" x2="422" y2="46" stroke="#b4a0d1" stroke-width="2.6"/><path d="M28 46 l9 -5 v10 z M422 46 l-9 -5 v10 z" fill="#b4a0d1"/>`;s+=`<line x1="${right?x0:35}" y1="${y}" x2="${right?414:x0}" y2="${y}" stroke="${mark}" stroke-width="7" stroke-linecap="round"/><path d="${right?'M415 46 l-13 -8 v16 z':'M35 46 l13 -8 v16 z'}" fill="${mark}"/>`;for(let i=-3;i<=3;i++){let x=x0+i*54;s+=`<line x1="${x}" y1="37" x2="${x}" y2="56" stroke="#aa91c9" stroke-width="1.8"/><text x="${x}" y="80" text-anchor="middle" font-size="16" font-family="system-ui" fill="#523675">${b+i}</text>`}s+=`<circle cx="${x0}" cy="${y}" r="9.5" fill="${strict?'#ffffff':mark}" stroke="${mark}" stroke-width="4"/></svg>`;return s}
+function renderBoard(){const grid=$('scoreGrid');grid.replaceChildren();state.teams.forEach((team,i)=>{const b=document.createElement('button');b.type='button';b.className='team-card'+(state.selected===i?' active':'');b.style.setProperty('--team-color',COLORS[i]);b.setAttribute('aria-pressed',String(state.selected===i));const left=document.createElement('div');left.style.minWidth='0';const title=document.createElement('div');title.className='team-name';title.textContent=team.name;const kicker=document.createElement('div');kicker.className='team-kicker';kicker.textContent=state.selected===i?'▶ Sedang bermain':'Pilih tim';left.append(title,kicker);const score=document.createElement('div');score.className='team-score';score.textContent=team.score;b.append(left,score);b.addEventListener('click',()=>{if(spinning)return;state.selected=i;save();renderBoard();renderStage()});grid.append(b)})}
+function renderStage(){const q=question(),active=state.teams[state.selected]||{name:'Kelompok'};bindText('progressPill',`${state.history.length} dari ${MAX} soal selesai`);bindText('remainP',remaining('PLSV').length);bindText('remainT',remaining('PtLSV').length);$('spinBtn').disabled=!state.started||spinning||(!!q&&!state.graded)||state.used.length>=MAX;bindText('spinBtn',spinning?'⏳ RODA BERPUTAR...':state.used.length>=MAX?'✓ SEMUA SOAL SELESAI':'🎡 PUTAR RODA');const canTimer=!!q&&!state.graded&&!state.revealed&&!spinning;['timerBtn','timerResetBtn','timerSelect'].forEach(id=>$(id).disabled=!canTimer);$('revealBtn').hidden=!q||state.revealed||state.graded||spinning;$('revealBtn').disabled=!canTimer;$('correctBtn').hidden=!q||!state.revealed||state.graded||spinning;$('wrongBtn').hidden=!q||!state.revealed||state.graded||spinning;$('nextBtn').hidden=!q||!state.graded||spinning;$('nextBtn').disabled=state.used.length===MAX;hide('answerCard',!q||!state.revealed);hide('resultBanner',!q||!state.graded);
+  const badges=$('questionBadges');badges.replaceChildren();
+  if(spinning){bindText('stageHeading','Roda sedang berputar');bindText('statusLabel','Mengundi soal');bindText('questionText','Roda sedang memilih tantangan untuk '+active.name+'…');$('questionText').className='placeholder-text';bindText('questionSupport','Tunggu roda berhenti dan perhatikan kategori yang terpilih.');}
+  else if(!q){bindText('stageHeading','Arena Tantangan');bindText('statusLabel','Siap dimainkan');bindText('questionText','Pilih tim yang bermain, lalu putar roda untuk mendapat soal pertama!');$('questionText').className='placeholder-text';bindText('questionSupport','Diskusikan jawaban bersama kelompok. Guru mengoperasikan aplikasi.');}
+  else {bindText('stageHeading',`Tantangan ${state.used.length} / ${MAX}`);bindText('statusLabel',state.graded?'Sudah dinilai':state.revealed?'Pembahasan terbuka':'Menunggu jawaban');const cat=document.createElement('span'),lvl=document.createElement('span'),team=document.createElement('span');cat.className='tag'+(q.cat==='PtLSV'?' cyan':'');cat.textContent=q.cat==='PLSV'?'Persamaan Linear (PLSV)':'Pertidaksamaan (PtLSV)';lvl.className='tag gold';lvl.textContent=`${levelLabel(q.level)} · ${points(q)} poin`;team.className='tag';team.textContent='🎯 '+active.name;badges.append(cat,lvl,team);bindText('questionText',q.q);$('questionText').className='question-text'+(q.q.length>105?' long':'');bindText('questionSupport',state.graded?'Soal telah selesai. Pilih tim berikutnya, lalu putar roda lagi.':state.revealed?'Guru: pilih BENAR atau SALAH untuk mencatat skor tim.':'Diskusikan bersama kelompok, kemudian jelaskan langkah penyelesaiannya.');bindText('answerMain',q.a);bindText('answerExplain',q.exp);hide('graphWrap',!q.graph);if(q.graph)$('graphWrap').innerHTML=makeNumberLine(q.graph);bindText('correctBtn',`✓ Benar · +${points(q)}`);if(state.graded){const record=state.history[state.history.length-1];const scored=record&&record.id===q.id&&record.correct;bindText('resultBanner',scored?`🎉 ${state.teams[record.teamIndex].name} memperoleh ${record.points} poin!`:'Soal selesai. Tidak ada poin yang ditambahkan.');$('resultBanner').className='result-banner'+(scored?'':' no-point')}}
+  drawTimer();}
+function render(){renderBoard();renderStage();$('wheelDisc').style.transition='none';$('wheelDisc').style.transform=`rotate(${state.angle||0}deg)`;}
+function reveal(){if(!question()||spinning||state.graded)return;state.revealed=true;stopTimer();save();renderStage()}
+function grade(correct){const q=question();if(!q||!state.revealed||state.graded||spinning)return;stopTimer();const earned=correct?points(q):0;state.teams[state.selected].score+=earned;state.history.push({id:q.id,cat:q.cat,teamIndex:state.selected,teamName:state.teams[state.selected].name,correct,points:earned});state.graded=true;save();chime(correct);renderBoard();renderStage();if(state.history.length===MAX){setTimeout(showFinish,450)}}
+function spin(){if(!state.started||spinning||(question()&&!state.graded)||state.used.length>=MAX)return;const available=QUESTIONS.filter(q=>!state.used.includes(q.id));if(!available.length)return;const q=available[Math.floor(Math.random()*available.length)];const eligible=Array.from({length:8},(_,i)=>i).filter(i=>(i%2===0)===(q.cat==='PLSV'));const chosenIndex=eligible[Math.floor(Math.random()*eligible.length)];const mod=((state.angle%360)+360)%360;const delta=((360-(chosenIndex+.5)*45-mod)%360+360)%360;state.angle+=360*(5+Math.floor(Math.random()*3))+delta;spinning=true;state.currentId=null;state.revealed=false;state.graded=false;resetTimer();renderStage();$('wheelDisc').style.transition='transform 4.4s cubic-bezier(.12,.82,.15,1)';requestAnimationFrame(()=>requestAnimationFrame(()=>{$('wheelDisc').style.transform=`rotate(${state.angle}deg)`}));spinTimeout=setTimeout(()=>{spinning=false;state.currentId=q.id;state.used.push(q.id);state.revealed=false;state.graded=false;resetTimer();save();renderStage();$('spinBtn').focus({preventScroll:true})},4450)}
+function renderSetupInputs(){const names=Array.from($('teamInputs').querySelectorAll('input')).map(e=>e.value);$('teamInputs').replaceChildren();bindText('teamCount',teamInputCount);for(let i=0;i<teamInputCount;i++){const group=document.createElement('div');group.className='input-group';const label=document.createElement('label'),inp=document.createElement('input');label.textContent=`Nama kelompok ${i+1}`;inp.id='setupTeam'+i;label.htmlFor=inp.id;inp.maxLength=24;inp.value=names[i]||['Tim Merah','Tim Biru','Tim Ungu','Tim Hijau','Tim Emas','Tim Toska'][i];group.append(label,inp);$('teamInputs').append(group)}$('minusTeam').disabled=teamInputCount<=2;$('plusTeam').disabled=teamInputCount>=6}
+function start(){state=defaultState();const names=[...$('teamInputs').querySelectorAll('input')].map((inp,i)=>inp.value.trim().slice(0,24)||`Kelompok ${i+1}`);state.teams=names.map(name=>({name,score:0}));state.started=true;save();hide('setupOverlay',true);resetTimer();render();}
+function resetGame(){if(!confirm('Mulai ulang? Semua skor dan kemajuan permainan saat ini akan terhapus.'))return;clearTimeout(spinTimeout);spinning=false;stopTimer();state=defaultState();save();teamInputCount=4;hide('finishOverlay',true);hide('helpOverlay',true);renderSetupInputs();hide('setupOverlay',false);resetTimer();render()}
+function showFinish(){const order=[...state.teams].sort((a,b)=>b.score-a.score);$('endList').replaceChildren();order.forEach((team,i)=>{const row=document.createElement('div');row.className='end-item';const rank=document.createElement('span'),name=document.createElement('span'),score=document.createElement('span');rank.className='end-rank';rank.textContent=['🥇','🥈','🥉'][i]||`#${i+1}`;name.className='end-name';name.textContent=team.name;score.className='end-points';score.textContent=team.score+' poin';row.append(rank,name,score);$('endList').append(row)});hide('finishOverlay',false)}
+function downloadCSV(){const lines=[['Rekap Roda Aljabar PLSV & PtLSV'],['Soal terselesaikan',String(state.history.length)],[],['Peringkat','Kelompok','Total poin']];[...state.teams].sort((a,b)=>b.score-a.score).forEach((t,i)=>lines.push([i+1,t.name,t.score]));lines.push([],['No.','ID soal','Kategori','Kelompok','Hasil','Poin']);state.history.forEach((h,i)=>lines.push([i+1,h.id,h.cat,h.teamName,h.correct?'Benar':'Salah',h.points]));const safe=x=>'"'+String(x??'').replaceAll('"','""')+'"';const csv='\uFEFF'+lines.map(r=>r.map(safe).join(';')).join('\r\n');const a=document.createElement('a'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.href=url;a.download='hasil_roda_aljabar.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function init(){if(MAX!==50||QUESTIONS.filter(q=>q.cat==='PLSV').length!==25||QUESTIONS.filter(q=>q.cat==='PtLSV').length!==25||new Set(QUESTIONS.map(q=>q.id)).size!==MAX)throw new Error('Data soal harus tepat 25 PLSV + 25 PtLSV tanpa ID duplikat');makeWheel();renderSetupInputs();resetTimer();render();hide('setupOverlay',state.started);$('spinBtn').addEventListener('click',spin);$('nextBtn').addEventListener('click',spin);$('revealBtn').addEventListener('click',reveal);$('correctBtn').addEventListener('click',()=>grade(true));$('wrongBtn').addEventListener('click',()=>grade(false));$('timerBtn').addEventListener('click',startOrPauseTimer);$('timerResetBtn').addEventListener('click',resetTimer);$('timerSelect').addEventListener('change',resetTimer);$('minusTeam').addEventListener('click',()=>{if(teamInputCount>2){teamInputCount--;renderSetupInputs()}});$('plusTeam').addEventListener('click',()=>{if(teamInputCount<6){teamInputCount++;renderSetupInputs()}});$('startBtn').addEventListener('click',start);$('helpBtn').addEventListener('click',()=>hide('helpOverlay',false));$('closeHelp').addEventListener('click',()=>hide('helpOverlay',true));$('restartBtn').addEventListener('click',resetGame);$('exportBtn').addEventListener('click',downloadCSV);$('finishExport').addEventListener('click',downloadCSV);$('closeFinish').addEventListener('click',()=>hide('finishOverlay',true));$('fullBtn').addEventListener('click',async()=>{try{if(document.fullscreenElement){await document.exitFullscreen()}else{await document.documentElement.requestFullscreen()}}catch{alert('Layar penuh tidak tersedia. Gunakan F11 pada keyboard browser.')}});$('soundBtn').addEventListener('click',()=>{state.sound=!state.sound;save();bindText('soundBtn',state.sound?'🔊 Suara':'🔇 Suara');$('soundBtn').setAttribute('aria-pressed',String(state.sound))});bindText('soundBtn',state.sound?'🔊 Suara':'🔇 Suara');$('soundBtn').setAttribute('aria-pressed',String(state.sound));document.addEventListener('keydown',ev=>{if(ev.target.closest('input,select,textarea,button'))return;if($('setupOverlay').hidden&&$('helpOverlay').hidden&&$('finishOverlay').hidden){if(ev.code==='Space'&&!ev.repeat){ev.preventDefault();spin()}if(ev.key.toLowerCase()==='v')reveal()}if(ev.key==='Escape')hide('helpOverlay',true)});}
+init();
+</script>
+</body>
+</html>
